@@ -1,0 +1,42 @@
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: gray;
+}
+
+.onlineBar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-left: 1px solid gray;
+}
+
+.header {
+  border-bottom: 1px solid gray;
+  padding: 0.3rem;
+}
+
+.userList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 100px;
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  background: transparent;
+  padding-block: 1rem;
+  padding-inline: 0.5rem;
+}

@@ -1,0 +1,119 @@
+.chatBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.chatHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  padding: 1rem;
+}
+
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.messageBox {
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 1rem;
+  height: 100px;
+  overflow: auto;
+}
+
+.default {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .messageBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messageBox::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 100px;
+  margin-block: 0.5rem;
+}
+
+.messageBox::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  background-color: #8070d4;
+}
+
+@supports (scrollbar-color: reb blue;) {
+  .messageBox {
+    scrollbar-color: rgb(209, 166, 110) #776142;
+    scrollbar-width: thin;
+  }
+} */
+
+.inputBox {
+  display: flex;
+  padding: 1rem;
+}
+
+.inputBox > input {
+  flex-grow: 1;
+  flex-shrink: 0;
+  border-radius: 1rem 0 0 1rem;
+  border: 2px solid gray;
+  border-right: none;
+  padding: 0.3rem;
+}
+
+.inputBox > button {
+  color: black;
+  font-weight: bold;
+  background-color: gray;
+  border: none;
+  border-radius: 0 1rem 1rem 0;
+  padding-inline: 1.2rem;
+  padding-block: 0.8rem;
+}
+
+.msg {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.self {
+  align-self: flex-start;
+  background-color: rgb(138, 61, 61);
+  padding-inline: 0.8rem;
+  padding-block: 0.3rem;
+  border-radius: 0 0.3rem 0.3rem 0.3rem;
+}
+
+.others {
+  align-self: flex-end;
+  background-color: rgb(76, 51, 87);
+  padding-inline: 0.8rem;
+  padding-block: 0.3rem;
+  border-radius: 0.3rem 0 0.3rem 0.3rem;
+}
+
+.username {
+  color: orange;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
