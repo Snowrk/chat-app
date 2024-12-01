@@ -9,6 +9,7 @@ import SideBar from "./components/SideBar";
 import OnlineBar from "./components/OnlineBar";
 import ChatBox from "./components/ChatBox";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 const socket = io("https://chat-app-server-red-seven.vercel.app/", {
   autoConnect: false,
@@ -23,6 +24,7 @@ const compStatus = {
 console.log(socket.id);
 
 const Success = (props) => {
+  const router = useRouter();
   const {
     profile,
     onlineUserList,
@@ -41,7 +43,7 @@ const Success = (props) => {
   };
   const handleSend = (msg, setMsg) => {
     const msgObj = { id: v4(), msg, sentBy: profile };
-    // console.log(socket.id);
+    console.log(socket.id);
     socket.emit("send-message", msgObj, activeRoomId);
     setMessageList((prev) => [...prev, msgObj]);
     setMsg("");
@@ -145,7 +147,10 @@ const Success = (props) => {
     });
     socket.on("receive-message", (msgObj, roomId) => {
       console.log(roomId);
+      console.log(activeRoomId);
+      console.log(roomId === activeRoomId);
       if (roomId === activeRoomId) {
+        console.log("here");
         setMessageList((prev) =>
           prev.findIndex((e) => e.id === msgObj.id) !== -1
             ? [...prev]
@@ -156,11 +161,14 @@ const Success = (props) => {
     socket.onAny((event, ...args) => {
       console.log(event, args);
     });
+    socket.onAnyOutgoing((event, ...args) => {
+      console.log(event, args);
+    });
     window.onbeforeunload = () => {
       socket.emit("userDisconnect", profile);
       // Cookies.remove("jwtToken");
     };
-  }, []);
+  }, [profile, activeRoomId]);
   return (
     <div className={styles.home}>
       <div className={styles.container}>

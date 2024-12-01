@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./index.module.css";
 
 const uri = process.env.NEXT_PUBLIC_API;
@@ -24,6 +24,17 @@ const ChatHeader = (props) => {
 
 const MessageBox = (props) => {
   const { messageList, profile } = props;
+  const scrollRef = useRef(null);
+  const refPoint = useRef(null);
+  useEffect(() => {
+    if (scrollRef.current !== null) {
+      // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messageList]);
   if (messageList === null) {
     return (
       <div className={styles.messageBox}>
@@ -32,8 +43,8 @@ const MessageBox = (props) => {
     );
   }
   return (
-    <div className={styles.messageBox}>
-      <ul className={styles.msg}>
+    <div className={styles.messageBox} ref={scrollRef}>
+      <ul className={styles.msg} ref={refPoint}>
         {messageList !== null ? (
           messageList.map((item) => (
             <li
