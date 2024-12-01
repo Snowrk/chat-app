@@ -10,7 +10,9 @@ import OnlineBar from "./components/OnlineBar";
 import ChatBox from "./components/ChatBox";
 import styles from "./page.module.css";
 
-const socket = io("http://localhost:3001/", { autoConnect: false });
+const socket = io("https://chat-app-server-red-seven.vercel.app/", {
+  autoConnect: false,
+});
 const uri = process.env.NEXT_PUBLIC_API;
 
 const compStatus = {
