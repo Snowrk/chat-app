@@ -29,7 +29,6 @@ const Chat = (props) => {
   };
   const connectToRoom = () => {
     setActiveRoomId(item.roomId);
-    getMessages();
   };
   return (
     <li
@@ -48,7 +47,8 @@ const Chat = (props) => {
 };
 
 const SideBar = (props) => {
-  const { roomsList, activeRoomId, setActiveRoomId, setMessageList } = props;
+  const { roomsList, activeRoomId, setActiveRoomId, setMessageList, profile } =
+    props;
   return (
     <div className={styles.sideBar}>
       <div className={styles.header}>

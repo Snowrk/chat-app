@@ -30,7 +30,50 @@ const Success = (props) => {
     setActiveRoomId,
     setMessageList,
     messageList,
+    setRoomsList,
   } = props;
+  const handleLogout = () => {
+    socket.emit("userDisconnect", profile);
+    Cookies.remove("jwtToken");
+    router.replace("/login");
+  };
+  const handleSend = (msg, setMsg) => {
+    const msgObj = { id: v4(), msg, sentBy: profile };
+    // console.log(socket.id);
+    socket.emit("send-message", msgObj, activeRoomId);
+    setMessageList((prev) => [...prev, msgObj]);
+    setMsg("");
+  };
+
+  useEffect(() => {
+    const getMessages = async () => {
+      setMessageList(null);
+      const url = `${uri}/rooms/${activeRoomId}/messages`;
+      const request = await fetch(url);
+      const response = await request.json();
+      if (request.ok) {
+        setMessageList(response);
+      }
+    };
+    // const updateMessageList = async () => {
+    //   const url = `${uri}/rooms/${activeRoom.roomId}/updateMessageList`;
+    //   const options = {
+    //     method: "PUT",
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       messageList,
+    //     }),
+    //   };
+    //   const request = await fetch(url, options);
+    //   const response = await request.json();
+    //   console.log(response);
+    // };
+    if (activeRoomId !== null) {
+      getMessages();
+    }
+  }, [activeRoomId]);
 
   useEffect(() => {
     const jwtToken = Cookies.get("jwtToken");
@@ -65,14 +108,15 @@ const Success = (props) => {
     };
     socket.connect();
     socket.on("connect", () => {
-      socket.emit("userConnect", profile);
-      socket.emit("connectRooms", roomsList);
-      setOnlineUserList((prev) =>
-        prev.findIndex((e) => e.userId === profile.userId) === -1
-          ? [...prev, profile]
-          : [...prev]
-      );
+      console.log("connected", socket.id);
     });
+    socket.emit("userConnect", profile);
+    socket.emit("connectRooms", roomsList);
+    setOnlineUserList((prev) =>
+      prev.findIndex((e) => e.userId === profile.userId) === -1
+        ? [...prev, profile]
+        : [...prev]
+    );
     // socket.emit("userConnect", profile);
     // setOnlineUserList((prev) =>
     //   prev.findIndex((e) => e.userId === profile.userId) === -1
@@ -82,9 +126,9 @@ const Success = (props) => {
     // socket.on("recive-message", (msg, roomId) => {
     //   console.log(msg);
     // });
-    socket.on("disconnect", () => {
-      socket.emit("userDisconnect", profile);
-    });
+    // socket.on("disconnect", () => {
+    //   socket.emit("userDisconnect", profile);
+    // });
     socket.on("userDisconnect", (profile) => {
       setOnlineUserList((prev) => [
         ...prev.filter((item) => item.userId !== profile.userId),
@@ -97,24 +141,35 @@ const Success = (props) => {
           : [...prev]
       );
     });
+    socket.on("receive-message", (msgObj, roomId) => {
+      console.log(roomId);
+      if (roomId === activeRoomId) {
+        setMessageList((prev) =>
+          prev.findIndex((e) => e.id === msgObj.id) !== -1
+            ? [...prev]
+            : [...prev, msgObj]
+        );
+      }
+    });
     socket.onAny((event, ...args) => {
       console.log(event, args);
     });
     window.onbeforeunload = () => {
       socket.emit("userDisconnect", profile);
-      Cookies.remove("jwtToken");
+      // Cookies.remove("jwtToken");
     };
   }, []);
   return (
     <div className={styles.home}>
       <div className={styles.container}>
-        <Header />
+        <Header profile={profile} handleLogout={handleLogout} />
         <div className={styles.contentCon}>
           <SideBar
             roomsList={roomsList}
             activeRoomId={activeRoomId}
             setActiveRoomId={setActiveRoomId}
             setMessageList={setMessageList}
+            profile={profile}
           />
           <ChatBox
             activeRoom={
@@ -125,8 +180,15 @@ const Success = (props) => {
             profile={profile}
             messageList={messageList}
             setMessageList={setMessageList}
+            handleSend={handleSend}
           />
-          <OnlineBar onlineUserList={onlineUserList} />
+          <OnlineBar
+            onlineUserList={onlineUserList}
+            setRoomsList={setRoomsList}
+            roomsList={roomsList}
+            profile={profile}
+            setActiveRoomId={setActiveRoomId}
+          />
         </div>
       </div>
     </div>
@@ -166,7 +228,12 @@ export default function Home() {
     };
     const getRooms = async () => {
       const url = `${uri}/rooms`;
-      const request = await fetch(url);
+      const options = {
+        headers: {
+          authorization: `Bearer ${jwtToken}`,
+        },
+      };
+      const request = await fetch(url, options);
       const response = await request.json();
       if (request.ok) {
         setRoomsList(response);
@@ -304,13 +371,19 @@ export default function Home() {
         roomsList={roomsList}
         messageList={messageList}
         setMessageList={setMessageList}
+        setRoomsList={setRoomsList}
       />
     );
   } else if (compState === compStatus.error) {
     console.log("error");
     return (
-      <div className={styles.error}>
-        <p>Failed to load</p>
+      <div className={styles.home}>
+        <div className={styles.container}>
+          <Header />
+          <div className={styles.error}>
+            <p>Failed to load</p>
+          </div>
+        </div>
       </div>
     );
   } else {

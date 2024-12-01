@@ -1,4 +1,7 @@
+import { v4 } from "uuid";
 import styles from "./index.module.css";
+
+const uri = process.env.NEXT_PUBLIC_API;
 
 const UserIcon = (props) => {
   const { item } = props;
@@ -16,17 +19,55 @@ const UserIcon = (props) => {
 };
 
 const User = (props) => {
-  const { item } = props;
+  const { item, roomsList, profile, setActiveRoomId, setRoomsList } = props;
+  const createPrivateRoom = async () => {
+    const url = `${uri}/rooms/private`;
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        roomName: `${profile.userName}-${item.userName}`,
+        userId: profile.userId,
+        friendId: item.userId,
+        type: "private",
+      }),
+    };
+    const request = await fetch(url, options);
+    const response = await request.json();
+    if (request.ok) {
+      console.log(response);
+      setRoomsList((prev) => [...prev, response]);
+      setActiveRoomId(response.roomId);
+    }
+  };
+  const connectPrivateRoom = () => {
+    if (profile.userId === item.userId) {
+      return;
+    }
+    const idx = roomsList.findIndex(
+      (e) => e.roomName === `${profile.userName}-${item.userName}`
+    );
+    if (idx === -1) {
+      createPrivateRoom();
+    } else {
+      setActiveRoomId(roomsList[idx].roomId);
+    }
+  };
   return (
     <li className={styles.userItem}>
-      <UserIcon item={item} />
-      <p>{item.userName}</p>
+      <button onClick={connectPrivateRoom}>
+        <UserIcon item={item} />
+        <p>{item.userName}</p>
+      </button>
     </li>
   );
 };
 
 const OnlineBar = (props) => {
-  const { onlineUserList } = props;
+  const { onlineUserList, roomsList, setRoomsList, setActiveRoomId, profile } =
+    props;
   return (
     <div className={styles.onlineBar}>
       <div className={styles.header}>
@@ -34,7 +75,14 @@ const OnlineBar = (props) => {
       </div>
       <ul className={styles.userList}>
         {onlineUserList.map((item) => (
-          <User item={item} key={item.userId} />
+          <User
+            item={item}
+            key={item.userId}
+            roomsList={roomsList}
+            setRoomsList={setRoomsList}
+            profile={profile}
+            setActiveRoomId={setActiveRoomId}
+          />
         ))}
       </ul>
     </div>

@@ -117,7 +117,7 @@ export default function Auth() {
             onClick={() => setLogin(false)}
             className={!login ? `${styles.btn} ${styles.active}` : styles.btn}
           >
-            Rigister
+            Register
           </button>
         </div>
         {login ? <Login /> : <Register />}

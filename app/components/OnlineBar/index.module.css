@@ -31,7 +31,7 @@
   height: 100px;
 }
 
-.userItem {
+.userItem > button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -39,4 +39,6 @@
   background: transparent;
   padding-block: 1rem;
   padding-inline: 0.5rem;
+  border: none;
+  width: 100%;
 }
