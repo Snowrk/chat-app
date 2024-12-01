@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import styles from "./page.module.css";
 
 const uri = process.env.NEXT_PUBLIC_API;
+console.log(uri);
 
 const Login = () => {
   const router = useRouter();
