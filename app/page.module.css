@@ -21,7 +21,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100dvh;
   padding-block: 2rem;
   padding-inline: 1rem;
 }
@@ -52,14 +52,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .loadingBody {
   margin: 0;
   padding: 0;
   background: #262626;
-  height: 100vh;
+  height: 100dvh;
 }
 .ring {
   position: absolute;
@@ -140,7 +140,7 @@
 .nav > button {
   background: transparent;
   border: none;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 @media (max-width: 600px) {

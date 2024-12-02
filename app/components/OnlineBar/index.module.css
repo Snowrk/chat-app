@@ -50,7 +50,7 @@
     width: 100vw;
     height: calc(100vh - 71px);
     background-color: white;
-    z-index: 1;
+    /* z-index: 1; */
   }
   .header {
     padding-left: 30px;
@@ -62,12 +62,13 @@
   }
 }
 .hide {
-  animation: hide 3s;
-  left: -100%;
+  display: none;
+  /* animation: hide 3s;
+  left: -100%; */
 }
-.show {
+/* .show {
   animation: show 3s;
-}
+} */
 
 @keyframes show {
   from {

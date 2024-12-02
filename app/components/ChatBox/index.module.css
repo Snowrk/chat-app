@@ -118,9 +118,9 @@
   margin-bottom: 0.2rem;
 }
 
-/* .hide {
+.hide {
   display: none;
-} */
+}
 
 @media (max-width: 600px) {
   .chatBox {
