@@ -11,7 +11,7 @@ import ChatBox from "./components/ChatBox";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 
-const socket = io("https://chat-app-server-red-seven.vercel.app/", {
+const socket = io(process.env.NEXT_PUBLIC_API, {
   autoConnect: false,
 });
 const uri = process.env.NEXT_PUBLIC_API;
