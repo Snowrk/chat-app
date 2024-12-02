@@ -126,7 +126,7 @@
   .chatBox {
     position: absolute;
     width: 100vw;
-    height: calc(100vh - 71px);
+    height: calc(100svh - 71px);
     left: 0;
   }
   .chatHeader {

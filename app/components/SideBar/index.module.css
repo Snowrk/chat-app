@@ -55,7 +55,7 @@
     position: absolute;
     left: 0;
     width: 100vw;
-    height: calc(100vh - 71px);
+    height: calc(100svh - 71px);
     background-color: white;
     /* z-index: 1; */
   }
