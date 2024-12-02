@@ -49,3 +49,43 @@
   border-radius: 50%;
   background-color: gray;
 }
+
+@media (max-width: 600px) {
+  .sideBar {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 71px);
+    background-color: white;
+    z-index: 1;
+  }
+  @media (prefers-color-scheme: dark) {
+    .sideBar {
+      background-color: #0a0a0a;
+    }
+  }
+}
+.hide {
+  animation: hide 3s forwards;
+}
+.show {
+  animation: show 3s;
+}
+
+@keyframes show {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes hide {
+  from {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
+}

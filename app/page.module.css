@@ -36,7 +36,7 @@
   max-width: 1200px;
   border: 1px solid gray;
   border-radius: 1rem;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .contentCon {
@@ -44,6 +44,7 @@
   flex-direction: row;
   border-top: 1px solid gray;
   flex-grow: 1;
+  overflow: auto;
 }
 
 .error {
@@ -129,6 +130,115 @@
   }
   100% {
     transform: rotate(405deg);
+  }
+}
+
+.nav {
+  display: none;
+}
+
+.nav > button {
+  background: transparent;
+  border: none;
+  z-index: 2;
+}
+
+@media (max-width: 600px) {
+  .home {
+    padding: 0;
+  }
+  .container {
+    border: none;
+  }
+  .nav {
+    display: block;
+  }
+  .left {
+    position: absolute;
+    right: 25px;
+    top: 85px;
+    color: #8070d4;
+    opacity: 1;
+  }
+  .right {
+    position: absolute;
+    right: 15px;
+    top: 85px;
+    color: #8070d4;
+    opacity: 1;
+  }
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .side {
+    animation: side 3s;
+    animation-delay: 0.2s;
+    right: 25px;
+  }
+  .noside {
+    animation: noside 3s;
+    animation-delay: 0.2s;
+    right: calc(100vw - 25px);
+    rotate: y 180deg;
+  }
+  @keyframes side {
+    from {
+      rotate: y 180deg;
+      right: calc(100vw - 25px);
+    }
+    to {
+      rotate: y 0deg;
+      right: 25px;
+    }
+  }
+  @keyframes noside {
+    from {
+      rotate: y 0deg;
+      right: 25px;
+    }
+    to {
+      rotate: y 180deg;
+      right: calc(100vw - 25px);
+    }
+  }
+  .online {
+    animation: online 3s;
+    animation-delay: -0.2s;
+    right: calc(100vw - 25px);
+  }
+  .noonline {
+    animation: noonline 3s;
+    animation-delay: 0.2s;
+    right: 15px;
+    rotate: y 180deg;
+  }
+  @keyframes online {
+    from {
+      rotate: y 180deg;
+      right: 15px;
+    }
+    to {
+      rotate: y 0deg;
+      right: calc(100vw - 25px);
+    }
+  }
+  @keyframes noonline {
+    from {
+      rotate: y 0deg;
+      right: calc(100vw - 25px);
+    }
+    to {
+      rotate: y 180deg;
+      right: 15px;
+    }
+  }
+  .hide {
+    display: none;
   }
 }
 

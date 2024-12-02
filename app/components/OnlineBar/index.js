@@ -1,5 +1,6 @@
 import { v4 } from "uuid";
 import styles from "./index.module.css";
+import { useEffect, useRef, useState } from "react";
 
 const uri = process.env.NEXT_PUBLIC_API;
 
@@ -66,10 +67,39 @@ const User = (props) => {
 };
 
 const OnlineBar = (props) => {
-  const { onlineUserList, roomsList, setRoomsList, setActiveRoomId, profile } =
-    props;
+  const {
+    onlineUserList,
+    roomsList,
+    setRoomsList,
+    setActiveRoomId,
+    profile,
+    view,
+  } = props;
+  const onlineBarRef = useRef(null);
+  const handleResize = () => {
+    // console.log(onlineBarRef.current);
+    if (onlineBarRef.current !== null) {
+      if (window.innerWidth <= 600 && view !== "onlinebar") {
+        onlineBarRef.current.classList.remove(`${styles.show}`);
+        onlineBarRef.current.classList.add(`${styles.hide}`);
+      } else {
+        onlineBarRef.current.classList.remove(`${styles.hide}`);
+        onlineBarRef.current.classList.add(`${styles.show}`);
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize, false);
+  }, [view]);
   return (
-    <div className={styles.onlineBar}>
+    <div
+      className={
+        window.innerWidth <= 600 && view !== "onlinebar"
+          ? `${styles.onlineBar} ${styles.hide}`
+          : `${styles.onlineBar} ${styles.show}`
+      }
+      ref={onlineBarRef}
+    >
       <div className={styles.header}>
         <h1>Active Users</h1>
       </div>

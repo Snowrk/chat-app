@@ -10,6 +10,7 @@ import OnlineBar from "./components/OnlineBar";
 import ChatBox from "./components/ChatBox";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 const socket = io(process.env.NEXT_PUBLIC_API, {
   autoConnect: false,
@@ -21,9 +22,10 @@ const compStatus = {
   success: "success",
   error: "error",
 };
-console.log(socket.id);
 
 const Success = (props) => {
+  const [view, setView] = useState("sidebar");
+  console.log(view);
   const router = useRouter();
   const {
     profile,
@@ -170,38 +172,76 @@ const Success = (props) => {
     };
   }, [profile, activeRoomId]);
   return (
-    <div className={styles.home}>
-      <div className={styles.container}>
-        <Header profile={profile} handleLogout={handleLogout} />
-        <div className={styles.contentCon}>
-          <SideBar
-            roomsList={roomsList}
-            activeRoomId={activeRoomId}
-            setActiveRoomId={setActiveRoomId}
-            setMessageList={setMessageList}
-            profile={profile}
-          />
-          <ChatBox
-            activeRoom={
-              activeRoomId !== null
-                ? roomsList.filter((e) => e.roomId === activeRoomId)[0]
-                : null
-            }
-            profile={profile}
-            messageList={messageList}
-            setMessageList={setMessageList}
-            handleSend={handleSend}
-          />
-          <OnlineBar
-            onlineUserList={onlineUserList}
-            setRoomsList={setRoomsList}
-            roomsList={roomsList}
-            profile={profile}
-            setActiveRoomId={setActiveRoomId}
-          />
+    <>
+      <div className={styles.home}>
+        <div className={styles.container}>
+          <Header profile={profile} handleLogout={handleLogout} />
+          <div className={styles.contentCon}>
+            <SideBar
+              roomsList={roomsList}
+              activeRoomId={activeRoomId}
+              setActiveRoomId={setActiveRoomId}
+              setMessageList={setMessageList}
+              profile={profile}
+              view={view}
+              setView={setView}
+            />
+            <ChatBox
+              activeRoom={
+                activeRoomId !== null
+                  ? roomsList.filter((e) => e.roomId === activeRoomId)[0]
+                  : null
+              }
+              profile={profile}
+              messageList={messageList}
+              setMessageList={setMessageList}
+              handleSend={handleSend}
+              view={view}
+              setView={setView}
+            />
+            <OnlineBar
+              onlineUserList={onlineUserList}
+              setRoomsList={setRoomsList}
+              roomsList={roomsList}
+              profile={profile}
+              setActiveRoomId={setActiveRoomId}
+              view={view}
+              setView={setView}
+            />
+          </div>
         </div>
       </div>
-    </div>
+      <div className={styles.nav}>
+        <button
+          onClick={() =>
+            setView((prev) => (prev === "sidebar" ? "chatbox" : "sidebar"))
+          }
+          className={
+            view === "onlinebar"
+              ? `${styles.left} ${styles.hide}`
+              : view === "sidebar"
+              ? `${styles.left} ${styles.side}`
+              : `${styles.left} ${styles.noside}`
+          }
+        >
+          <FaAngleLeft />
+        </button>
+        <button
+          onClick={() =>
+            setView((prev) => (prev === "chatbox" ? "onlinebar" : "chatbox"))
+          }
+          className={
+            view === "sidebar"
+              ? `${styles.right} ${styles.hide}`
+              : view === "onlinebar"
+              ? `${styles.right} ${styles.online}`
+              : `${styles.right} ${styles.noonline}`
+          }
+        >
+          <FaAngleRight />
+        </button>
+      </div>
+    </>
   );
 };
 

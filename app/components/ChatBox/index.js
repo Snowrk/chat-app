@@ -85,10 +85,30 @@ const InputBox = (props) => {
 };
 
 const Success = (props) => {
-  const { activeRoom, profile, messageList, setMessageList, handleSend } =
+  const { activeRoom, profile, messageList, setMessageList, handleSend, view } =
     props;
+  const chatBoxRef = useRef(null);
+  const handleResize = () => {
+    if (chatBoxRef.current !== null) {
+      if (window.innerWidth <= 600 && view !== "chatbox") {
+        chatBoxRef.current.classList.add(`${styles.hide}`);
+      } else {
+        chatBoxRef.current.classList.remove(`${styles.hide}`);
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize, false);
+  }, [view]);
   return (
-    <div className={styles.chatBox}>
+    <div
+      className={
+        window.innerWidth <= 600 && view !== "chatbox"
+          ? `${styles.chatBox} ${styles.hide}`
+          : styles.chatBox
+      }
+      ref={chatBoxRef}
+    >
       <ChatHeader roomDetails={activeRoom} />
       <MessageBox
         messageList={messageList}
@@ -106,19 +126,49 @@ const Success = (props) => {
   );
 };
 
-const Default = () => {
+const Default = (props) => {
+  const { view } = props;
+  const defaultRef = useRef(null);
+  const handleResize = () => {
+    if (defaultRef.current !== null) {
+      if (window.innerWidth <= 600 && view !== "chatbox") {
+        defaultRef.current.classList.add(`${styles.hide}`);
+      } else {
+        defaultRef.current.classList.remove(`${styles.hide}`);
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize, false);
+  }, [view]);
+  // useEffect(() => {
+  //   if (defaultRef.current !== null) {
+  //     if (window.innerWidth < 600) {
+  //       defaultRef.current.classList.add(`${styles.hide}`);
+  //     } else {
+  //       defaultRef.current.classList.remove(`${styles.hide}`);
+  //     }
+  //   }
+  // }, [window.innerWidth]);
   return (
-    <div className={styles.default}>
+    <div
+      className={
+        window.innerWidth <= 600 && view !== "chatbox"
+          ? `${styles.default} ${styles.hide}`
+          : styles.default
+      }
+      ref={defaultRef}
+    >
       <p>your chats apper here</p>
     </div>
   );
 };
 
 const ChatBox = (props) => {
-  const { activeRoom, profile, messageList, setMessageList, handleSend } =
+  const { activeRoom, profile, messageList, setMessageList, handleSend, view } =
     props;
   return activeRoom === null ? (
-    <Default />
+    <Default view={view} />
   ) : (
     <Success
       activeRoom={activeRoom}
@@ -126,6 +176,7 @@ const ChatBox = (props) => {
       messageList={messageList}
       setMessageList={setMessageList}
       handleSend={handleSend}
+      view={view}
     />
   );
 };

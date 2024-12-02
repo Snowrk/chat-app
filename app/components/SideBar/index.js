@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
 const uri = process.env.NEXT_PUBLIC_API;
@@ -18,7 +19,8 @@ const ChatItcon = (props) => {
 };
 
 const Chat = (props) => {
-  const { item, setActiveRoomId, activeRoomId, setMessageList } = props;
+  const { item, setActiveRoomId, activeRoomId, setMessageList, setView } =
+    props;
   const getMessages = async () => {
     const url = `${uri}/rooms/${item.roomId}/messages`;
     const request = await fetch(url);
@@ -29,6 +31,7 @@ const Chat = (props) => {
   };
   const connectToRoom = () => {
     setActiveRoomId(item.roomId);
+    setView("chatbox");
   };
   return (
     <li
@@ -47,10 +50,39 @@ const Chat = (props) => {
 };
 
 const SideBar = (props) => {
-  const { roomsList, activeRoomId, setActiveRoomId, setMessageList, profile } =
-    props;
+  const {
+    roomsList,
+    activeRoomId,
+    setActiveRoomId,
+    setMessageList,
+    view,
+    setView,
+  } = props;
+  const sideBarRef = useRef(null);
+  const handleResize = () => {
+    // console.log(sideBarRef.current);
+    if (sideBarRef.current !== null) {
+      if (window.innerWidth <= 600 && view !== "sidebar") {
+        sideBarRef.current.classList.remove(`${styles.show}`);
+        sideBarRef.current.classList.add(`${styles.hide}`);
+      } else {
+        sideBarRef.current.classList.remove(`${styles.hide}`);
+        sideBarRef.current.classList.add(`${styles.show}`);
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize, false);
+  }, [view]);
   return (
-    <div className={styles.sideBar}>
+    <div
+      className={
+        window.innerWidth <= 600 && view !== "sidebar"
+          ? `${styles.sideBar} ${styles.hide}`
+          : `${styles.sideBar} ${styles.show}`
+      }
+      ref={sideBarRef}
+    >
       <div className={styles.header}>
         <h1>Chats</h1>
       </div>
@@ -62,6 +94,7 @@ const SideBar = (props) => {
             activeRoomId={activeRoomId}
             setMessageList={setMessageList}
             key={item.roomId}
+            setView={setView}
           />
         ))}
       </ul>

@@ -117,3 +117,19 @@
   font-weight: bold;
   margin-bottom: 0.2rem;
 }
+
+/* .hide {
+  display: none;
+} */
+
+@media (max-width: 600px) {
+  .chatBox {
+    position: absolute;
+    width: 100vw;
+    height: calc(100vh - 71px);
+    left: 0;
+  }
+  .chatHeader {
+    padding-inline: 2.5rem;
+  }
+}
