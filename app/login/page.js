@@ -8,30 +8,54 @@ import styles from "./page.module.css";
 const uri = process.env.NEXT_PUBLIC_API;
 console.log(uri);
 
-const Login = () => {
+const Loader = () => (
+  <div className={styles.center}>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+    <div className={styles.wave}></div>
+  </div>
+);
+
+const Login = (props) => {
+  const { loading, setLoading } = props;
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleLogin = async () => {
-    const url = `${uri}/login`;
-    const options = {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    };
-    const request = await fetch(url, options);
-    const response = await request.json();
-    if (request.ok) {
-      Cookies.set("jwtToken", response.jwtToken, { expires: 7 });
-      router.replace("/");
+    if (username === "" || password === "") {
+      setErr("username or password cannot be empty");
+    } else if (username.length < 3 || password.length < 3) {
+      setErr("username or password cannot be less than 3 letters");
     } else {
-      setErr(response.err);
+      setLoading(true);
+      const url = `${uri}/login`;
+      const options = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      };
+      const request = await fetch(url, options);
+      const response = await request.json();
+      if (request.ok) {
+        Cookies.set("jwtToken", response.jwtToken, { expires: 7 });
+        router.replace("/");
+      } else {
+        setErr(response.err);
+      }
+      setLoading(false);
     }
   };
   return (
@@ -49,36 +73,54 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      {loading ? (
+        <button className={styles.loading} disabled>
+          <span className={styles.hidden}>Loading</span>
+          <Loader />
+        </button>
+      ) : (
+        <button onClick={handleLogin} className={styles.btn1}>
+          Login
+        </button>
+      )}
       {err.length > 0 && <p>{err}</p>}
     </div>
   );
 };
 
-const Register = () => {
+const Register = (props) => {
+  const { loading, setLoading } = props;
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleRegister = async () => {
-    const url = `${uri}/register`;
-    const options = {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    };
-    const request = await fetch(url, options);
-    const response = await request.json();
-    if (request.ok) {
-      Cookies.set("jwtToken", response.jwtToken, { expires: 7 });
-      router.replace("/");
+    if (username === "" || password === "") {
+      setErr("username or password cannot be empty");
+    } else if (username.length < 3 || password.length < 3) {
+      setErr("username or password cannot be less than 3 letters");
     } else {
-      setErr(response.err);
+      setLoading(true);
+      const url = `${uri}/register`;
+      const options = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      };
+      const request = await fetch(url, options);
+      const response = await request.json();
+      if (request.ok) {
+        Cookies.set("jwtToken", response.jwtToken, { expires: 7 });
+        router.replace("/");
+      } else {
+        setErr(response.err);
+      }
+      setLoading(false);
     }
   };
   return (
@@ -96,7 +138,16 @@ const Register = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleRegister}>Register</button>
+      {loading ? (
+        <button className={styles.loading} disabled>
+          <span className={styles.hidden}>Loading</span>
+          <Loader />
+        </button>
+      ) : (
+        <button onClick={handleRegister} className={styles.btn1}>
+          Register
+        </button>
+      )}
       {err.length > 0 && <p>{err}</p>}
     </div>
   );
@@ -104,6 +155,7 @@ const Register = () => {
 
 export default function Auth() {
   const [login, setLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   return (
     <div className={styles.auth}>
       <div className={styles.container}>
@@ -121,7 +173,11 @@ export default function Auth() {
             Register
           </button>
         </div>
-        {login ? <Login /> : <Register />}
+        {login ? (
+          <Login loading={loading} setLoading={setLoading} />
+        ) : (
+          <Register loading={loading} setLoading={setLoading} />
+        )}
       </div>
     </div>
   );

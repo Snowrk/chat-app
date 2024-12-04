@@ -15,7 +15,12 @@ const Header = (props) => {
           )}
           <p>{profile.userName}</p>
         </div>
-        <button onClick={handleLogout}>LogOut</button>
+        <button
+          onClick={handleLogout}
+          className="border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
+        >
+          LogOut
+        </button>
       </div>
     </div>
   );
