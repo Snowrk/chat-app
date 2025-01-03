@@ -52,7 +52,7 @@ const Login = ({loading, setLoading}) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-          {loading?(<Loader/>):(<button onClick={handleLogin}>Login</button>)
+          {loading?(<Loader/>):(<button onClick={handleLogin}>Login</button>)}
       {err.length > 0 && <p>{err}</p>}
     </div>
   );
