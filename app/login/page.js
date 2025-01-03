@@ -4,16 +4,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import styles from "./page.module.css";
+import { Loader } from "../components/loader";
 
 const uri = process.env.NEXT_PUBLIC_API;
 console.log(uri);
 
-const Login = () => {
+const Login = ({loading, setLoading}) => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleLogin = async () => {
+    setLoading(true)
     const url = `${uri}/login`;
     const options = {
       method: "POST",
@@ -33,6 +35,7 @@ const Login = () => {
     } else {
       setErr(response.err);
     }
+    setLoading(false)
   };
   return (
     <div className={styles.form}>
@@ -49,18 +52,19 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+          {loading?(<Loader/>):(<button onClick={handleLogin}>Login</button>)
       {err.length > 0 && <p>{err}</p>}
     </div>
   );
 };
 
-const Register = () => {
+const Register = ({loading, setLoading}) => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleRegister = async () => {
+    setLoading(true)
     const url = `${uri}/register`;
     const options = {
       method: "POST",
@@ -80,6 +84,7 @@ const Register = () => {
     } else {
       setErr(response.err);
     }
+    setLoading(false)
   };
   return (
     <div className={styles.form}>
@@ -96,7 +101,7 @@ const Register = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleRegister}>Register</button>
+          {loading?(<Loader/>):(<button onClick={handleRegister}>Register</button>)}
       {err.length > 0 && <p>{err}</p>}
     </div>
   );
@@ -104,6 +109,7 @@ const Register = () => {
 
 export default function Auth() {
   const [login, setLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   return (
     <div className={styles.auth}>
       <div className={styles.container}>
@@ -121,7 +127,7 @@ export default function Auth() {
             Register
           </button>
         </div>
-        {login ? <Login /> : <Register />}
+        {login ? <Login loading={loading} setLoading={setLoading} /> : <Register loading={loading} setLoading={setLoading} />}
       </div>
     </div>
   );
