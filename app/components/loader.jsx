@@ -1,4 +1,4 @@
-import styles from "../ui.module.css";
+import styles from "./ui.module.css";
 
 export const Loader = () => (
   <div className={styles.center}>
