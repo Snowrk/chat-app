@@ -56,7 +56,7 @@ const MessageBox = (props) => {
               }
             >
               <p className={styles.username}>{item.sentBy.userName}</p>
-              <p>{item.msg}</p>
+              <p className={styles.message}>{item.msg}</p>
             </li>
           ))
         ) : (
