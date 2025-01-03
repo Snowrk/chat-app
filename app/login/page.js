@@ -15,6 +15,13 @@ const Login = ({loading, setLoading}) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleLogin = async () => {
+    if (username === "" || password === "") {
+      setErr("username or password cannot be empty");
+      return;
+    } else if (username.length < 3 || password.length < 3) {
+      setErr("username or password cannot be less than 3 letters");
+      return;
+    }
     setLoading(true)
     const url = `${uri}/login`;
     const options = {
@@ -64,6 +71,13 @@ const Register = ({loading, setLoading}) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const handleRegister = async () => {
+    if (username === "" || password === "") {
+      setErr("username or password cannot be empty");
+      return;
+    } else if (username.length < 3 || password.length < 3) {
+      setErr("username or password cannot be less than 3 letters");
+      return;
+    }
     setLoading(true)
     const url = `${uri}/register`;
     const options = {
