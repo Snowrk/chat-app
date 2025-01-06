@@ -23,6 +23,10 @@
   width: 50px;
 }
 
+.message {
+  word-break: break-word;
+}
+
 .messageBox {
   flex-grow: 1;
   flex-shrink: 0;
