@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import { socket } from "@/socket";
 import ChatBox from "@/components/chatbox";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -24,10 +24,6 @@ import { MobileNavUser } from "@/components/mobile-nav-user";
 import { Account } from "@/components/Account";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
-const socket = io(process.env.NEXT_PUBLIC_API, {
-  autoConnect: false,
-});
 
 const uri = process.env.NEXT_PUBLIC_API;
 
@@ -732,7 +728,17 @@ export default function Home({ secret }) {
       }
     });
   }, [activeRoomId, enKey]);
-  console.log("Home");
+  console.log("Home", {
+    chatsList,
+    profile,
+    onlineList,
+    loading,
+    activeRoomId,
+    view,
+    viewAccount,
+    messageList,
+    enKey,
+  });
 
   if (
     loading === compStatus.loading ||
