@@ -53,6 +53,7 @@ const Login = (props) => {
         }),
       };
       const request = await fetch(url, options);
+      console.log(request);
       const response = await request.json();
       if (request.ok) {
         Cookies.set("jwtToken", response.jwtToken, { expires: 7 });

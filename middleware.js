@@ -1,23 +1,48 @@
 import { NextResponse } from "next/server";
-import { parse } from "cookie";
+// import { parse } from "cookie";
+import { jwtVerify } from "jose";
 
-export function middleware(request) {
-  const cookies = parse(request.headers.get("cookie") || "");
-  const token = cookies.jwtToken;
-  console.log(token);
+export async function middleware(request) {
+  // const cookies = parse(request.headers.get("cookie") || "");
+  const token = request.cookies.get("jwtToken");
+  console.log("in here", token);
   if (request.nextUrl.pathname.startsWith("/login")) {
     if (token !== undefined) {
-      return NextResponse.redirect(new URL("/", request.url));
+      try {
+        const verify = await jwtVerify(
+          token.value,
+          new TextEncoder().encode(process.env.JWT_SECRET)
+        );
+        return NextResponse.redirect(new URL("/", request.url));
+      } catch (e) {
+        request.cookies.delete("jwtToken");
+        return NextResponse.next();
+      }
     }
     return NextResponse.next();
   } else {
+    console.log("middle in else");
     if (token === undefined) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    return NextResponse.next();
+    try {
+      const verify = await jwtVerify(
+        token.value,
+        new TextEncoder().encode(process.env.JWT_SECRET)
+      );
+      console.log("middle", verify);
+      const res = NextResponse.next();
+      res.headers.set("userId", verify.payload.userId);
+      return res;
+    } catch (e) {
+      request.cookies.delete("jwtToken");
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 }
 
 export const config = {
-  matcher: ["/login", "/"],
+  matcher: [
+    "/((?!api/login|api/register|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };

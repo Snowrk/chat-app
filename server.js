@@ -1,6 +1,7 @@
-const { createServer } = require("node:http");
-const next = require("next");
-const { Server } = require("socket.io");
+import { createServer } from "node:http";
+import next from "next";
+import { Server } from "socket.io";
+// import clientPromise from "./lib/mongodb.js";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -13,6 +14,13 @@ app.prepare().then(() => {
   const httpServer = createServer(handler);
 
   const io = new Server(httpServer);
+  // let client;
+  // clientPromise.then((value) => {
+  //   client = value;
+  // });
+  // const chatApp = client.db("ChatApp");
+  // const users = chatApp.collection("users");
+  // const rooms = chatApp.collection("rooms");
 
   io.on("connection", (socket) => {
     console.log("yo");

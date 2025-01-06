@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { socket } from "@/socket";
 import ChatBox from "@/components/chatbox";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Image from "next/image";
 import { v4 } from "uuid";
@@ -473,7 +473,7 @@ export default function Home({ secret }) {
   const [activeRoomId, setActiveRoomId] = useState(null);
   const [api, setApi] = useState();
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(api);
-  const [view, setView] = useState("Desktop");
+  const [view, setView] = useState("Mobile");
   const [viewAccount, setViewAccount] = useState(false);
   const [messageList, setMessageList] = useState(null);
   const [onlineList, setOnlineList] = useState([]);
