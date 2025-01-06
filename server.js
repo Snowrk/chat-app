@@ -23,7 +23,7 @@ app.prepare().then(() => {
   // const rooms = chatApp.collection("rooms");
 
   io.on("connection", (socket) => {
-    console.log("yo");
+    // console.log("yo");
     socket.on("connectRooms", (roomsList) => {
       // console.log(roomsList, socket.id);
       roomsList.forEach((element) => {
@@ -31,14 +31,14 @@ app.prepare().then(() => {
       });
       // console.log(socket.rooms);
     });
-    socket.onAny((event, ...args) => {
-      console.log(`got ${event}`, args);
-    });
-    socket.onAnyOutgoing((event, ...args) => {
-      console.log(`got ${event}`, args);
-    });
+    // socket.onAny((event, ...args) => {
+    //   console.log(`got ${event}`, args);
+    // });
+    // socket.onAnyOutgoing((event, ...args) => {
+    //   console.log(`got ${event}`, args);
+    // });
     socket.on("send-message", async (msgObj, roomId) => {
-      console.log(socket.rooms);
+      // console.log(socket.rooms);
       socket.to(roomId).emit("receive-message", msgObj, roomId);
       // const room = await rooms.findOne({ roomId });
       // const idx = room.messages.findIndex((e) => e.id === msgObj.id);

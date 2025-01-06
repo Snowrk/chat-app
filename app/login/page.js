@@ -212,7 +212,9 @@ export default function Auth() {
   // }, [searchParams.get("signup")]);
   return (
     <div className="flex flex-col h-screen">
-      <Wrapper />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Wrapper />
+      </Suspense>
     </div>
   );
 }

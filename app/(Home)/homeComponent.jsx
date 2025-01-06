@@ -503,8 +503,8 @@ export default function Home({ secret }) {
       sentBy: profile,
       type: "encrypted",
     };
-    console.log(socket.id);
-    console.log("msgObj", msgObj);
+    // console.log(socket.id);
+    // console.log("msgObj", msgObj);
     socket.emit("send-message", msgObj, activeRoomId);
     setMessageList((prev) => [
       ...prev,
@@ -534,7 +534,7 @@ export default function Home({ secret }) {
     const request = await fetch(url, options);
     const response = await request.json();
     if (request.ok) {
-      console.log(response);
+      // console.log(response);
       setChatsList((prev) => [...prev, response]);
       setActiveRoomId(response.roomId);
     }
@@ -654,12 +654,12 @@ export default function Home({ secret }) {
     socket.on("connect", () => {
       console.log("connected", socket.id);
     });
-    socket.onAny((event, ...args) => {
-      console.log(event, args);
-    });
-    socket.onAnyOutgoing((event, ...args) => {
-      console.log(event, args);
-    });
+    // socket.onAny((event, ...args) => {
+    //   console.log(event, args);
+    // });
+    // socket.onAnyOutgoing((event, ...args) => {
+    //   console.log(event, args);
+    // });
     if (window.innerWidth <= 900) {
       setView("Mobile");
     } else {
@@ -728,17 +728,17 @@ export default function Home({ secret }) {
       }
     });
   }, [activeRoomId, enKey]);
-  console.log("Home", {
-    chatsList,
-    profile,
-    onlineList,
-    loading,
-    activeRoomId,
-    view,
-    viewAccount,
-    messageList,
-    enKey,
-  });
+  // console.log("Home", {
+  //   chatsList,
+  //   profile,
+  //   onlineList,
+  //   loading,
+  //   activeRoomId,
+  //   view,
+  //   viewAccount,
+  //   messageList,
+  //   enKey,
+  // });
 
   if (
     loading === compStatus.loading ||

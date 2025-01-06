@@ -33,7 +33,7 @@ const ChatHeader = (props) => {
 const MessageBox = (props) => {
   const { messageList, profile, activeRoomId, decryptKey } = props;
   const scrollRef = useRef(null);
-  console.log(messageList);
+  // console.log(messageList);
   useEffect(() => {
     if (scrollRef.current !== null) {
       scrollRef.current.scrollTo({
@@ -162,7 +162,7 @@ const ChatBox = (props) => {
     activeRoomId,
     decryptKey,
   } = props;
-  console.log("chatbox");
+  // console.log("chatbox");
   return activeRoomId === null ? (
     <Default view={view} />
   ) : (

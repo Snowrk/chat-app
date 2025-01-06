@@ -12,7 +12,7 @@ export async function GET() {
     messages: 0,
   };
   const list = await rooms.find().project(projection).toArray();
-  console.log(list);
+  // console.log(list);
   const newList = list
     .filter((e) => e.users.includes(userId))
     .map((item) => ({ roomId: item.roomId, roomName: item.roomName }));

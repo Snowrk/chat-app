@@ -5,7 +5,7 @@ import { jwtVerify } from "jose";
 export async function middleware(request) {
   // const cookies = parse(request.headers.get("cookie") || "");
   const token = request.cookies.get("jwtToken");
-  console.log("in here", token);
+  // console.log("in here", token);
   if (request.nextUrl.pathname.startsWith("/login")) {
     if (token !== undefined) {
       try {
@@ -21,7 +21,6 @@ export async function middleware(request) {
     }
     return NextResponse.next();
   } else {
-    console.log("middle in else");
     if (token === undefined) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -30,7 +29,6 @@ export async function middleware(request) {
         token.value,
         new TextEncoder().encode(process.env.JWT_SECRET)
       );
-      console.log("middle", verify);
       const res = NextResponse.next();
       res.headers.set("userId", verify.payload.userId);
       return res;
