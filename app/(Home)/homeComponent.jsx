@@ -591,66 +591,37 @@ export default function Home({ secret }) {
     }
   }, [activeRoomId]);
   useEffect(() => {
-    const getOnlineUsers = async () => {
-      const url = `${uri}/onlineUsers`;
-      const options = {
-        headers: {
-          authorization: `Bearer ${jwtToken}`,
-        },
-      };
-      const request = await fetch(url, options);
-      const response = await request.json();
-      if (request.ok) {
-        setOnlineList(response);
-        console.log("1");
-      } else {
-        setLoading(compStatus.failed);
-      }
-    };
-    const getRooms = async () => {
-      const url = `${uri}/rooms`;
-      const options = {
-        headers: {
-          authorization: `Bearer ${jwtToken}`,
-        },
-      };
-      const request = await fetch(url, options);
-      const response = await request.json();
-      if (request.ok) {
-        setChatsList(response);
-        console.log("2");
-      } else {
-        setLoading(compStatus.failed);
-      }
-    };
-    const getProfile = async () => {
-      const url = `${uri}/profile`;
-      const options = {
-        headers: {
-          authorization: `Bearer ${jwtToken}`,
-        },
-      };
-      const request = await fetch(url, options);
-      const response = await request.json();
-      if (request.ok) {
-        setProfile(response);
-        console.log("3");
-      } else {
-        setLoading(compStatus.failed);
-      }
-    };
-
     const sendRequest = () => {
       setLoading(compStatus.loading);
-      getProfile();
-      getRooms();
-      getOnlineUsers();
+      const url1 = `${uri}/onlineUsers`;
+      const url2 = `${uri}/rooms`;
+      const url3 = `${uri}/profile`;
+      const options = {
+        headers: {
+          authorization: `Bearer ${jwtToken}`,
+        },
+      };
+      const promise1 = fetch(url1, options);
+      const promise2 = fetch(url2, options);
+      const promise3 = fetch(url3, options);
+      Promise.all([promise1, promise2, promise3])
+        .then((values) => {
+          const [request1, request2, request3] = values;
+          Promise.all([request1.json(), request2.json(), request3.json()]).then(
+            (responses) => {
+              const [response1, response2, response3] = responses;
+              setOnlineList(response1);
+              setChatsList(response2);
+              setProfile(response3);
+              setLoading(compStatus.success);
+            }
+          );
+        })
+        .catch((e) => {
+          setLoading(compStatus.failed);
+        });
     };
-
     sendRequest();
-    setLoading((prev) =>
-      prev !== compStatus.failed ? compStatus.success : compStatus.failed
-    );
   }, []);
 
   useEffect(() => {
@@ -734,7 +705,7 @@ export default function Home({ secret }) {
         // Cookies.remove("jwtToken");
       };
     }
-  }, [profile]);
+  }, [profile, chatsList]);
 
   useEffect(() => {
     const setDecryptedMsg = async (msgObj) => {

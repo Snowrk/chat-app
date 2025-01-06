@@ -4,7 +4,7 @@ async function getSecret() {
   return process.env.SECRET;
 }
 
-export default function Page() {
+export default async function Page() {
   const secret = getSecret();
   return <Home secret={secret} />;
 }

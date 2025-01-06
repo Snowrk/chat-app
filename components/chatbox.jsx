@@ -30,42 +30,12 @@ const ChatHeader = (props) => {
   );
 };
 
-// const MsgItem = ({ item, profile, keys }) => {
-//   const [loading, setLoading] = useState(true);
-//   const [decrypted, setDecrypted] = useState(null);
-//   useEffect(() => {
-//     async function setVal() {
-//       const newVal = await decryptMessage(item.msg, keys.privateKey);
-//       setDecrypted(newVal);
-//       setLoading(false);
-//     }
-//     setVal();
-//   }, []);
-//   if (loading) {
-//     return;
-//   }
-//   return (
-//     <li
-//       className={
-//         item.sentBy.userId === profile.userId ? styles.self : styles.others
-//       }
-//     >
-//       <p className={styles.username}>{item.sentBy.userName}</p>
-//       <p>{decrypted}</p>
-//     </li>
-//   );
-// };
-
 const MessageBox = (props) => {
   const { messageList, profile, activeRoomId, decryptKey } = props;
   const scrollRef = useRef(null);
-  const refPoint = useRef(null);
-  // const [list, setList] = useState(null);
   console.log(messageList);
-  // console.log("list", list);
   useEffect(() => {
     if (scrollRef.current !== null) {
-      // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
         behavior: "smooth",
@@ -170,15 +140,6 @@ const Success = (props) => {
 
 const Default = () => {
   const defaultRef = useRef(null);
-  // useEffect(() => {
-  //   if (defaultRef.current !== null) {
-  //     if (window.innerWidth < 600) {
-  //       defaultRef.current.classList.add(`${styles.hide}`);
-  //     } else {
-  //       defaultRef.current.classList.remove(`${styles.hide}`);
-  //     }
-  //   }
-  // }, [window.innerWidth]);
   return (
     <div
       className="flex flex-col justify-center items-center w-full border-r-2"
