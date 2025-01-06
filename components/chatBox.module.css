@@ -39,28 +39,28 @@
 }
 
 /* .messageBox::-webkit-scrollbar {
-  width: 8px;
-}
-
-.messageBox::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 100px;
-  margin-block: 0.5rem;
-}
-
-.messageBox::-webkit-scrollbar-thumb {
-  border-radius: 100px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-  background-color: #8070d4;
-}
-
-@supports (scrollbar-color: reb blue;) {
-  .messageBox {
-    scrollbar-color: rgb(209, 166, 110) #776142;
-    scrollbar-width: thin;
+    width: 8px;
   }
-} */
+  
+  .messageBox::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 100px;
+    margin-block: 0.5rem;
+  }
+  
+  .messageBox::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    background-color: #8070d4;
+  }
+  
+  @supports (scrollbar-color: reb blue;) {
+    .messageBox {
+      scrollbar-color: rgb(209, 166, 110) #776142;
+      scrollbar-width: thin;
+    }
+  } */
 
 .inputBox {
   display: flex;
@@ -76,7 +76,7 @@
   padding: 0.3rem;
 }
 
-.inputBox > button {
+/* .inputBox > button {
   color: black;
   font-weight: bold;
   background-color: gray;
@@ -84,7 +84,7 @@
   border-radius: 0 1rem 1rem 0;
   padding-inline: 1.2rem;
   padding-block: 0.8rem;
-}
+} */
 
 .msg {
   list-style-type: none;
@@ -95,9 +95,16 @@
   gap: 0.8rem;
 }
 
+.scrollhide {
+  scrollbar-color: transparent transparent;
+  scrollbar-width: none;
+}
+
 .self {
   align-self: flex-start;
-  background-color: rgb(138, 61, 61);
+  /* background-color: rgb(138, 61, 61); */
+  /* background-color: #431407; (bg-orange-950)*/
+  background-color: #022c22;
   padding-inline: 0.8rem;
   padding-block: 0.3rem;
   border-radius: 0 0.3rem 0.3rem 0.3rem;
@@ -105,14 +112,15 @@
 
 .others {
   align-self: flex-end;
-  background-color: rgb(76, 51, 87);
+  /* background-color: rgb(76, 51, 87); */
+  background-color: #082f49;
   padding-inline: 0.8rem;
   padding-block: 0.3rem;
   border-radius: 0.3rem 0 0.3rem 0.3rem;
 }
 
 .username {
-  color: orange;
+  color: #ffa500;
   font-size: 0.8rem;
   font-weight: bold;
   margin-bottom: 0.2rem;
