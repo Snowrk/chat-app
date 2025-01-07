@@ -10,7 +10,7 @@ import { SignupForm } from "@/components/register-form";
 import { ModeToggle } from "@/components/mode-toggle";
 
 const uri = process.env.NEXT_PUBLIC_API;
-console.log(uri);
+// console.log(uri);
 
 const Loader = () => (
   <div className={styles.center}>
